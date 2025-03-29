@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import axios from 'axios'; // Fixed typo
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+const test = async () => {
+    try {
+      const res = await axios.get("http://localhost:3500/incidents");
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const post = async () => {
+    try {
+      let data = {
+        "time_date": "2025-03-29 08:30",
+        "building": "Building A",
+        "primary_category": "Fire",
+        "incident_category": "Electrical Fire",
+        "secondary_category": "Short Circuit",
+        "severity": "High",
+        "incident_level": "Level 3",
+        "probability": "Likely",
+        "description": "Smoke detected in server room."
+      };
+
+      const res = await axios.post("http://localhost:3500/incidents", data, {
+        headers: { "Content-Type": "application/json" } 
+      });
+
+      console.log("Response:", res.data);
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <button onClick={test}>test</button>
 
-export default App
+      <button onClick={post}>post</button>
+    </div>
+  );
+};
+
+export default App;
