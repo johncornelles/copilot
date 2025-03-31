@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { storage } from "./firebase.js"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid"; 
 
 const App = () => {
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [downloadURL, setDownloadURL] = useState("");
+  const [incidents, setIncidents] = useState([]);
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
@@ -44,6 +46,7 @@ const App = () => {
     try {
       const res = await axios.get("http://localhost:3500/incidents");
       console.log(res.data);
+      setIncidents(res.data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -52,6 +55,7 @@ const App = () => {
   const post = async () => {
     try {
       let data = {
+        "id": uuidv4(),
         "time_date": "2025-03-29 08:30",
         "building": "Building A",
         "primary_category": "Fire",
@@ -69,6 +73,7 @@ const App = () => {
       });
 
       console.log("Response:", res.data);
+      setIncidents(res.data)
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -76,6 +81,25 @@ const App = () => {
 
   return (
     <div>
+      <div style={{ overflow: "scroll", height: "700px", display:"flex", flexDirection:"column" } }>
+      {
+        incidents && incidents.map((incident, index) => (
+          <div key={index}>
+            <p ></p>
+            <p>Time Date: {incident.time_date}</p>
+            <p>Building: {incident.building}</p>
+            <p>Primary Category: {incident.primary_category}</p>
+            <p>Incident Category: {incident.incident_category}</p>
+            <p>Secondary Category: {incident.secondary_category}</p>
+            <p>Severity: {incident.severity}</p>
+            <p>Incident Level: {incident.incident_level}</p>
+            <p>Probability: {incident.probability}</p>
+            <p>Description: {incident.description}</p>
+            <img src={incident.incident_url} height="400px" width="400px" />
+          </div>
+        ))
+      }
+      </div>
       <button onClick={test}>test</button>
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>

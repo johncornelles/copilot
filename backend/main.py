@@ -5,13 +5,14 @@ import uvicorn
 api = FastAPI()
 
 fake_incident_data = [
-    {"time_date": "2025-03-29 08:30", "building": "Building A", "primary_category": "Fire", "incident_category": "Electrical Fire", "secondary_category": "Short Circuit", "severity": "High", "incident_level": "Level 3", "probability": "Likely", "description": "Smoke detected in server room."},
-    {"time_date": "2025-03-28 14:15", "building": "Building B", "primary_category": "Security", "incident_category": "Unauthorized Access", "secondary_category": "Forced Entry", "severity": "Medium", "incident_level": "Level 2", "probability": "Possible", "description": "Unidentified person entered restricted area."},
-    {"time_date": "2025-03-27 10:45", "building": "Building C", "primary_category": "Health & Safety", "incident_category": "Injury", "secondary_category": "Slip & Fall", "severity": "Low", "incident_level": "Level 1", "probability": "Unlikely", "description": "Employee slipped in cafeteria, minor injury."},
-    {"time_date": "2025-03-26 22:00", "building": "Building D", "primary_category": "IT", "incident_category": "System Failure", "secondary_category": "Network Outage", "severity": "High", "incident_level": "Level 3", "probability": "Likely", "description": "Company-wide internet outage."}
+    {"time_date": "2025-03-29 08:30", 
+    "id": "e8cb5c47-a8fc-43f1-9a07-b189148ca431k2",
+    "building": "Building A", "primary_category": "Fire", "incident_category": "Electrical Fire", "secondary_category": "Short Circuit",
+    "incident_url": "https://firebasestorage.googleapis.com/v0/b/discute-d033d.appspot.com/o/uploads%2Fai-implementation.png?alt=media&token=c9581d00-cecb-4e78-b8cd-3f7c3b9d85ea"
+     ,"severity": "High", "incident_level": "Level 3", "probability": "Likely", "description": "Smoke detected in server room."},
 ]
 
-# Enable CORS
+
 api.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -31,4 +32,4 @@ async def post_incidents(request: Request):
     return fake_incident_data
 
 if __name__ == "__main__":
-    uvicorn.run("main:api", host="0.0.0.0", port=3500, workers=4, reload=True)
+    uvicorn.run("main:api", host="0.0.0.0", port=3500, reload=True)
